@@ -60,9 +60,7 @@ class MobileLayout extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Travel Dashboard'),
       ),
-      body: const Center(
-        child: Text('Mobile Layout'),
-      ),
+      body: const DealDashboard(),
       bottomNavigationBar: Row(
         children: destinations.map((destination) {
           return Expanded(
@@ -105,12 +103,72 @@ class DesktopLayout extends StatelessWidget {
             ),
           ),
           const Expanded(
-            child: Center(
-              child: Text('Desktop Layout'),
+            child: DealDashboard(),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class DealDashboard extends StatelessWidget {
+  const DealDashboard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final deals = [
+      TravelDeal(
+        'Paris Getaway',
+        799.99,
+        '5 days in Paris',
+        true,
+      ),
+      TravelDeal(
+        'Beach Vacation',
+        599.99,
+        'Relax by the ocean',
+        false,
+      ),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = constraints.maxWidth > 400 ? 2 : 1;
+
+        return GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 1.5,
+          ),
+          itemCount: deals.length,
+          itemBuilder: (context, index) {
+            final deal = deals[index];
+
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      deal.title,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(deal.description),
+                    const Spacer(),
+                    Text('$${deal.price.toStringAsFixed(2)}'),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
