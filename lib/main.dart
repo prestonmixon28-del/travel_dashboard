@@ -29,19 +29,89 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final destination = Destination("paris", Icons.flight);
+    final destinations = [
+      Destination('home', Icons.home),
+      Destination('explore', Icons.explore),
+      Destination('bookings', Icons.book),
+      Destination('profile', Icons.person),
+    ];
+      final width = MediaQuery.sizeOf(context).width;
 
+      if (width < 600) {
+        return MobileLayout(destinations: destinations);
+      } else {
+        return DesktopLayout(destinations: destinations);
+      }
+    
+  }
+}
+
+class MobileLayout extends StatelessWidget {
+  final List<Destination> destinations;
+
+  const MobileLayout({
+    super.key,
+    required this.destinations,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Travel Dashboard"),
+        title: const Text('Travel Dashboard'),
       ),
-      body: Center(
-        child: Text(
-          destination.name,
-          style: Theme.of(context).textTheme.displayLarge,
-        ),
+      body: const Center(
+        child: Text('Mobile Layout'),
       ),
-      );
+      bottomNavigationBar: Row(
+        children: destinations.map((destination) {
+          return Expanded(
+            child: ListTile(
+              leading: Icon(destination.icon),
+              title: Text(destination.name),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class DesktopLayout extends StatelessWidget {
+  final List<Destination> destinations;
+
+  const DesktopLayout({
+    super.key,
+    required this.destinations,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Travel Dashboard'),
+      ),
+      body: Row(
+        children: [
+          SizedBox(
+            width: 200,
+            child: Column(
+              children: destinations.map((destination) {
+                return ListTile(
+                  leading: Icon(destination.icon),
+                  title: Text(destination.name),
+                );
+              }).toList(),
+            ),
+          ),
+          const Expanded(
+            child: Center(
+              child: Text('Desktop Layout'),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
