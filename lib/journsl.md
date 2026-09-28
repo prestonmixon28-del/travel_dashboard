@@ -1,0 +1,1 @@
+ThemeData is conveient because it lets you set the app's style is one place. It can seem compolicsated becasuse there are many different settings you can change.
